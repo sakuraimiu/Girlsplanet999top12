@@ -69,7 +69,7 @@ trainee: {
   image: ...
   selected: false/true // whether user selected them
   eliminated: false/true
-  top9: false/true
+  top12: false/true
 }
 */
 function convertCSVArrayToTraineeData(csvArrays) {
@@ -82,13 +82,12 @@ function convertCSVArrayToTraineeData(csvArrays) {
     } else {
       trainee.name_japanese = traineeArray[1];
       trainee.name_hangul = traineeArray[2];
-    }	
-    trainee.name_hangul = traineeArray[2];
+    }
     trainee.company = traineeArray[3];
     trainee.grade = traineeArray[4];
     trainee.birthyear = traineeArray[5];
     trainee.eliminated = traineeArray[6] === 'e'; // sets trainee to be eliminated if 'e' appears in 6th col
-    trainee.top9 = traineeArray[6] === 't'; // sets trainee to top 12 if 't' appears in 6th column
+    trainee.top12 = traineeArray[6] === 't'; // sets trainee to top 12 if 't' appears in 6th column
     trainee.id = parseInt(traineeArray[7]) - 1; // trainee id is the original ordering of the trainees in the first csv
     trainee.image =
       trainee.name_romanized.replace(" ", "").replace("-", "") + ".jpg";
@@ -185,7 +184,7 @@ function populateTableEntry(trainee) {
       <img class="table__entry-img" src="assets/trainees/${trainee.image}" />
       <div class="table__entry-icon-border ${trainee.grade.toLowerCase()}-rank-border"></div>
       ${
-        top9 ? '<div class="table__entry-icon-crown"></div>' : ''
+        top12 ? '<div class="table__entry-icon-crown"></div>' : ''
       }
       ${
         trainee.selected ? '<img class="table__entry-check" src="assets/check.png"/>' : ""
@@ -390,7 +389,7 @@ function removeRankedTrainee(trainee) {
   return false;
 }
 
-const currentURL = "https://sakuraimiu.github.io/PlanetGirls999/";
+const currentURL = "https://produce48.github.io/";
 // Serializes the ranking into a string and appends that to the current URL
 function generateShareLink() {
   let shareCode = ranking.map(function (trainee) {
@@ -422,7 +421,7 @@ var trainees = [];
 var filteredTrainees = [];
 // holds the ordered list of rankings that the user selects
 var ranking = newRanking();
-const rowNums = [1, 3, 4, 4];
+const rowNums = [1, 2, 4, 5];
 //window.addEventListener("load", function () {
   populateRanking();
   readFromCSV("./trainee_info.csv");
